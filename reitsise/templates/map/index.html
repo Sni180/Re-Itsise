@@ -1,0 +1,288 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="container"
+  style="
+    padding: 0 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: &quot;Inter&quot;, sans-serif;
+    background-color: #f8fafc;
+    min-height: 100vh;
+    position: relative;
+  "
+>
+  <div
+    id="affectedModal"
+    style="
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    "
+  >
+    <div
+      style="
+        background: white;
+        padding: 30px;
+        border-radius: 24px;
+        width: 90%;
+        max-width: 400px;
+      "
+    >
+      <h3 style="color: #0f172a; margin-bottom: 10px; font-weight: 800">
+        I'm Affected Too
+      </h3>
+      <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 20px">
+        Provide your details to stay updated on this repair.
+      </p>
+      <form id="affectedForm">
+        {% csrf_token %}
+        <input type="hidden" id="modalFaultId" name="fault_id" />
+        <div style="margin-bottom: 15px">
+          <label
+            style="
+              display: block;
+              font-size: 0.8rem;
+              font-weight: 700;
+              margin-bottom: 5px;
+            "
+            >Full Name</label
+          >
+          <input
+            type="text"
+            name="name"
+            required
+            style="
+              width: 100%;
+              padding: 12px;
+              border: 1px solid #e2e8f0;
+              border-radius: 12px;
+            "
+          />
+        </div>
+        <div style="margin-bottom: 20px">
+          <label
+            style="
+              display: block;
+              font-size: 0.8rem;
+              font-weight: 700;
+              margin-bottom: 5px;
+            "
+            >Cellphone</label
+          >
+          <input
+            type="tel"
+            name="cellphone"
+            required
+            placeholder="071 234 5678"
+            style="
+              width: 100%;
+              padding: 12px;
+              border: 1px solid #e2e8f0;
+              border-radius: 12px;
+            "
+          />
+        </div>
+        <div style="display: flex; gap: 10px">
+          <button
+            type="button"
+            onclick="closeModal()"
+            style="
+              flex: 1;
+              background: #f1f5f9;
+              border: none;
+              padding: 12px;
+              border-radius: 12px;
+              font-weight: 700;
+              cursor: pointer;
+            "
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            id="submitBtn"
+            style="
+              flex: 2;
+              background: #2563eb;
+              color: white;
+              border: none;
+              padding: 12px;
+              border-radius: 12px;
+              font-weight: 700;
+              cursor: pointer;
+            "
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <header style="padding: 40px 0 20px 0">
+    <h1 style="font-weight: 900; color: #0f172a; font-size: 2rem; margin: 0">
+      Re Itsise
+    </h1>
+    <p style="color: #64748b; font-weight: 600">Community Activity Feed</p>
+  </header>
+
+  <main style="max-width: 800px; margin: 0 auto; padding-bottom: 120px">
+    {% for fault in faults %}
+    <div
+      class="report-card"
+      style="
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 24px;
+        padding: 30px;
+        margin-bottom: 24px;
+      "
+    >
+      <div style="margin-bottom: 15px">
+        <span
+          style="
+            background: #f1f5f9;
+            color: #475569;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+          "
+        >
+       <span style="background: #f1f5f9; color: #475569; padding: 6px 14px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+    {% if fault.category == 'WLEAK' %}
+        💧 Water Leak
+    {% elif fault.category == 'BPIPE' %}
+        🛠️ Burst Pipe
+    {% elif fault.category == 'ELEC' %}
+        ⚡ Electricity Issue
+    {% elif fault.category == 'POTHL' %}
+        🕳️ Pothole
+    {% elif fault.category == 'SEWER' %}
+        🏗️ Sewerage Leak
+    {% else %}
+        ⚠️ {{ fault.category }}
+    {% endif %}
+</span>
+      </div>
+
+      <h3
+        style="
+          margin: 0 0 10px 0;
+          font-size: 1.4rem;
+          color: #0f172a;
+          font-weight: 800;
+        "
+      >
+        {{ fault.location_address }}
+      </h3>
+
+      <p
+        style="
+          color: #475569;
+          font-size: 1.05rem;
+          line-height: 1.6;
+          margin-bottom: 25px;
+        "
+      >
+        {{ fault.description }}
+      </p>
+
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 20px;
+          border-top: 1px solid #f8fafc;
+        "
+      >
+        <span style="color: #94a3b8; font-size: 0.85rem"
+          >Reported {{ fault.date_reported|timesince }} ago</span
+        >
+        <button
+          onclick="openModal('{{ fault.id }}')"
+          style="
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+          "
+        >
+          🙋‍♂️ I'm Affected
+        </button>
+      </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; padding: 40px; color: #94a3b8">
+      <p>No reports found in your area yet.</p>
+    </div>
+    {% endfor %}
+  </main>
+
+  <a
+    href="{% url 'report' %}"
+    style="
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      background: #0f172a;
+      color: white;
+      padding: 20px 35px;
+      border-radius: 100px;
+      text-decoration: none;
+      font-weight: 900;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+    "
+  >
+    📢 LOG REPORT
+  </a>
+</div>
+
+<script>
+  function openModal(id) {
+    document.getElementById("modalFaultId").value = id;
+    document.getElementById("affectedModal").style.display = "flex";
+  }
+  function closeModal() {
+    document.getElementById("affectedModal").style.display = "none";
+  }
+
+  document.getElementById("affectedForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("submitBtn");
+    btn.innerText = "Saving...";
+    btn.disabled = true;
+
+    try {
+      const response = await fetch("{% url 'im_affected' %}", {
+        method: "POST",
+        body: new FormData(e.target),
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      });
+      if (response.ok) {
+        alert("Details linked! We will notify you of updates.");
+        closeModal();
+      } else {
+        alert("Error saving. Please try again.");
+      }
+    } catch (error) {
+      alert("Connection error.");
+    } finally {
+      btn.innerText = "Submit";
+      btn.disabled = false;
+    }
+  };
+</script>
+{% endblock %}

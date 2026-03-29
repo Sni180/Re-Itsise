@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Re Itsise | Infrastructure Portal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-dark: #1a1f2c;
+        --accent-blue: #0062ff;
+        --bg-light: #f8f9fc;
+        --text-main: #2d3436;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        display: flex;
+        background-color: var(--bg-light);
+        color: var(--text-main);
+      }
+
+      /* Sidebar Dashboard */
+      .sidebar {
+        width: 260px;
+        height: 100vh;
+        background: var(--primary-dark);
+        color: white;
+        position: fixed;
+        padding: 20px;
+        z-index: 1000;
+      }
+
+      /* Multilingual Section Styling */
+      .translate-label {
+        color: var(--accent-blue);
+        font-weight: 800;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+      }
+
+      #google_translate_element {
+        margin-bottom: 30px;
+      }
+
+      /* Enhanced Google Translate UI */
+      .goog-te-gadget {
+        font-family: "Inter", sans-serif !important;
+        color: #a0aec0 !important; /* Matches sidebar text */
+      }
+
+      .goog-te-combo {
+        width: 100%;
+        background: #ffffff !important; /* High contrast for visibility */
+        color: #1a1f2c !important;
+        border: 2px solid var(--accent-blue) !important;
+        padding: 8px !important;
+        border-radius: 8px !important;
+        cursor: pointer;
+        font-weight: 600;
+        font-family: "Inter", sans-serif !important;
+      }
+
+      /* Removed 'display:none' rules to keep Google branding visible for clarity */
+
+      .brand {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+        display: block;
+      }
+      .slogan {
+        font-size: 0.75rem;
+        color: #a0aec0;
+        margin-bottom: 30px;
+        display: block;
+      }
+
+      .nav-link {
+        display: block;
+        padding: 12px;
+        color: #a0aec0;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        transition: 0.2s;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      /* Main Content Area */
+      .main-content {
+        margin-left: 300px;
+        padding: 40px;
+        width: 100%;
+        max-width: 1100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <a href="{% url 'explorer_map' %}" class="brand notranslate">Re Itsise</a>
+      <span class="slogan notranslate">See, Inform, Track — Together</span>
+
+      <div class="language-picker">
+        <span class="translate-label">🌍 Change Interface Langauage</span>
+        <div id="google_translate_element"></div>
+      </div>
+
+      <nav>
+        <a href="{% url 'explorer_map' %}" class="nav-link active">🏠 Home</a>
+        <a href="{% url 'about' %}" class="nav-link">ℹ️ About </a>
+        <a href="{% url 'help' %}" class="nav-link">❓ Help & FAQs</a>
+      </nav>
+    </div>
+
+    <div class="main-content">{% block content %}{% endblock %}</div>
+
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            /* st: Setswana (displayed as Sesotho by default), zu: Zulu, af: Afrikaans, xh: Xhosa */
+            includedLanguages: "en,af,st,zu,xh",
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+          },
+          "google_translate_element",
+        );
+
+        // This script fixes the 'Sesotho' label to say 'Setswana' for Kimberley users
+        const fixLabels = () => {
+          const combo = document.querySelector(".goog-te-combo");
+          if (combo) {
+            for (let i = 0; i < combo.options.length; i++) {
+              if (combo.options[i].text === "Sesotho") {
+                combo.options[i].text = "Setswana";
+              }
+            }
+          }
+        };
+        setTimeout(fixLabels, 1000);
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+  </body>
+</html>
