@@ -15,8 +15,8 @@ class Fault(models.Model):
     ]
 
     # --- AUTO-GENERATED REFERENCE NUMBER ---
-    # editable=False hides it from the report form so users can't change it
-    ref_number = models.CharField(max_length=10, unique=True, null=True, blank=True, editable=False)
+    ref_number = models.CharField(max_length=12, unique=True, null=True, blank=True, editable=False)
+    
     # Information from Step 1
     full_name = models.CharField(max_length=150)
     cellphone = models.CharField(max_length=15)
@@ -41,14 +41,10 @@ class Fault(models.Model):
     ])
     date_reported = models.DateTimeField(auto_now_add=True)
 
-    # --- THE AUTOMATIC LOGIC ---
     def save(self, *args, **kwargs):
-        # Only create a reference number if it doesn't exist yet (new reports)
         if not self.ref_number:
-            # Generates a 6-character random code: e.g., RI-8F2D4E
             random_id = uuid.uuid4().hex[:6].upper()
             self.ref_number = f"RI-{random_id}"
-        
         super(Fault, self).save(*args, **kwargs)
 
     @property
@@ -61,5 +57,22 @@ class Fault(models.Model):
         ordering = ['-date_reported']
 
     def __str__(self):
-        # Including the ref_number makes it easier to find in the Admin
         return f"{self.ref_number} - {self.get_category_display()}"
+
+
+class AffectedResident(models.Model):
+    """Stores details for residents who click 'I'm Affected Too'"""
+    fault = models.ForeignKey(
+        Fault, 
+        on_delete=models.CASCADE, 
+        related_name='affected_residents'
+    )
+    full_name = models.CharField(max_length=150)
+    cellphone = models.CharField(max_length=15)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_joined']
+
+    def __str__(self):
+        return f"{self.full_name} - {self.fault.ref_number}"

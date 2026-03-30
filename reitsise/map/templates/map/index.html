@@ -316,55 +316,40 @@
         
       </div>
 
-      <h3
-        style="
-          margin: 0 0 10px 0;
-          font-size: 1.4rem;
-          color: #0f172a;
-          font-weight: 800;
-        "
-      >
-        {{ fault.location_address }}
-      </h3>
+      <h3 style="margin: 0 0 10px 0; font-size: 1.4rem; color: #0f172a; font-weight: 800;">
+    {{ fault.location_address }}
+</h3>
 
-      <p
-        style="
-          color: #475569;
-          font-size: 1.05rem;
-          line-height: 1.6;
-          margin-bottom: 25px;
-        "
-      >
-        {{ fault.description }}
-      </p>
+<p style="color: #475569; font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px;">
+    {{ fault.description }}
+</p>
 
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding-top: 20px;
-          border-top: 1px solid #f8fafc;
-        "
-      >
-        <span style="color: #94a3b8; font-size: 0.85rem"
-          >Reported {{ fault.date_reported|timesince }} ago</span
-        >
-        <button
-          onclick="openModal('{{ fault.id }}')"
-          style="
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            color: #1e293b;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-          "
-        >
-          🙋‍♂️ I'm Affected
-        </button>
-      </div>
+<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid #f8fafc;">
+    
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span style="color: #94a3b8; font-size: 0.85rem">
+            Reported {{ fault.date_reported|timesince }} ago
+        </span>
+        
+        <span style="color: #2563eb; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 5px;">
+            👥 
+            {% if fault.affected_residents.count > 0 %}
+                {{ fault.affected_residents.count }} resident{{ fault.affected_residents.count|pluralize }} affected
+            {% else %}
+                Be the first to join this report
+            {% endif %}
+        </span>
+    </div>
+
+    <button
+        onclick="openModal('{{ fault.id }}')"
+        style="background: #ffffff; border: 1px solid #e2e8f0; color: #1e293b; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer;"
+    >
+        🙋‍♂️ I'm Affected
+    </button>
+</div>
+
+
     </div>
     {% empty %}
     <div style="text-align: center; padding: 40px; color: #94a3b8">
