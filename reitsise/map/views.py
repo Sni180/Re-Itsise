@@ -12,7 +12,7 @@ def about(request): return render(request, 'about.html')
 def help_faq(request): return render(request, 'help.html')
 
 from django.http import JsonResponse
-from .models import Fault  # Replace 'Fault' with your actual model name
+from .models import Fault  
 
 def im_affected(request):
     if request.method == 'POST':
