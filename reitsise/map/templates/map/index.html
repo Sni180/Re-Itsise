@@ -127,10 +127,114 @@
   </div>
 
   <header style="padding: 40px 0 20px 0">
-    <h1 style="font-weight: 900; color: #0f172a; font-size: 2rem; margin: 0">
-      Re Itsise
-    </h1>
-    <p style="color: #64748b; font-weight: 600">Community Activity Feed</p>
+    <div
+      style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px"
+    >
+      <div
+        style="
+          background: #2563eb;
+          padding: 15px;
+          border-radius: 18px;
+          box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        "
+      >
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"
+          />
+          <path d="M12 6a6 6 0 1 1 0 12 6 6 0 0 1 0-12z" />
+          <circle cx="12" cy="12" r="2" />
+        </svg>
+      </div>
+      <div>
+        <h1
+          style="
+            font-weight: 900;
+            color: #0f172a;
+            font-size: 2.2rem;
+            margin: 0;
+            line-height: 1;
+          "
+        >
+          Re Itsise
+        </h1>
+        <p style="color: #64748b; font-weight: 600; margin-top: 5px">
+          See, Inform, Track — Together
+        </p>
+      </div>
+    </div>
+
+    <div
+      style="
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 100px;
+        padding: 12px 30px;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-bottom: 40px;
+        font-size: 0.85rem;
+        font-weight: 700;
+      "
+    >
+      <div style="color: #64748b">
+        SMS <span style="color: #ef4444; margin-left: 5px">44204</span>
+      </div>
+      <div style="width: 1px; background: #e2e8f0"></div>
+      <div style="color: #64748b">
+        CALL
+        <span style="color: #ef4444; margin-left: 5px">053 830 6111 / 080 122 9010</span>
+      </div>
+      <div style="width: 1px; background: #e2e8f0"></div>
+      <div style="color: #64748b">
+        SMART ELEC METERS<span style="color: #ef4444; margin-left: 5px">0800 000 404</span>
+      </div>
+    </div>
+
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      "
+    >
+      <h2
+        style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin: 0"
+      >
+        Community Activity
+      </h2>
+      <span
+        style="
+          color: #10b981;
+          font-size: 0.8rem;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        "
+      >
+        <span
+          style="
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+          "
+        ></span>
+        Kimberley Live
+      </span>
+    </div>
   </header>
 
   <main style="max-width: 800px; margin: 0 auto; padding-bottom: 120px">
@@ -143,9 +247,33 @@
         border-radius: 24px;
         padding: 30px;
         margin-bottom: 24px;
+        position: relative;
       "
     >
-      <div style="margin-bottom: 15px">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 15px;
+        "
+      >
+
+      <span style="background: #f1f5f9; color: #475569; padding: 6px 14px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+    {% if fault.category == 'WLEAK' %}
+        💧 Water Leak
+    {% elif fault.category == 'BPIPE' %}
+        🛠️ Burst Pipe
+    {% elif fault.category == 'ELEC' %}
+        ⚡ Electricity Issue
+    {% elif fault.category == 'POTH' %}
+        🕳️ Pothole
+    {% elif fault.category == 'SEWER' %}
+        🏗️ Sewerage Leak
+    {% else %}
+        ⚠️ {{ fault.category }}
+    {% endif %}
+</span>
         <span
           style="
             background: #f1f5f9;
@@ -154,23 +282,34 @@
             border-radius: 10px;
             font-weight: 700;
             font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
           "
         >
-       <span style="background: #f1f5f9; color: #475569; padding: 6px 14px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
-    {% if fault.category == 'WLEAK' %}
-        💧 Water Leak
-    {% elif fault.category == 'BPIPE' %}
-        🛠️ Burst Pipe
-    {% elif fault.category == 'ELEC' %}
-        ⚡ Electricity Issue
-    {% elif fault.category == 'POTHL' %}
-        🕳️ Pothole
-    {% elif fault.category == 'SEWER' %}
-        🏗️ Sewerage Leak
-    {% else %}
-        ⚠️ {{ fault.category }}
+        
+
+       <div style="display: flex; flex-direction: column; align-items: flex-end;">
+    {% if fault.status == 'LOG' %}
+        <span style="color: #2563eb; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">Logged</span>
+    {% elif fault.status == 'PRG' %}
+        <span style="color: #f59e0b; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">In Progress</span>
+    {% elif fault.status == 'RES' %}
+        <span style="color: #10b981; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">Resolved</span>
     {% endif %}
-</span>
+
+    <div style="width: 100px; height: 4px; background: #e2e8f0; border-radius: 10px; margin-top: 4px; overflow: hidden;">
+        {% if fault.status == 'LOG' %}
+            <div style="width: 30%; height: 100%; background: #2563eb;"></div>
+        {% elif fault.status == 'PRG' %}
+            <div style="width: 60%; height: 100%; background: #f59e0b;"></div>
+        {% elif fault.status == 'RES' %}
+            <div style="width: 100%; height: 100%; background: #10b981;"></div>
+        {% endif %}
+    </div>
+</div>
+
+        
       </div>
 
       <h3
@@ -244,6 +383,9 @@
       font-weight: 900;
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
       z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     "
   >
     📢 LOG REPORT
