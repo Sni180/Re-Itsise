@@ -1,0 +1,140 @@
+{% extends 'base.html' %} {% block content %}
+<div class="card" style="max-width: 900px; margin: 0 auto; padding: 40px">
+  <h1 style="color: var(--primary-dark); font-weight: 800; margin-bottom: 10px">
+    Help & FAQs
+  </h1>
+  <p style="color: #64748b; margin-bottom: 40px; font-size: 1.1rem">
+    Everything you need to know about reporting and tracking infrastructure
+    issues.
+  </p>
+
+  <div
+    style="
+      background: #f8fafc;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+      border: 1px solid #e2e8f0;
+    "
+  >
+    <h3 style="margin-bottom: 15px; color: var(--primary-dark)">
+      🚀 The Resolution Process
+    </h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap">
+      <div style="flex: 1; min-width: 200px">
+        <strong>1. Report</strong>
+        <p style="font-size: 0.85rem; color: #475569">
+          Submit your fault with a photo or voice note.
+        </p>
+      </div>
+      <div style="flex: 1; min-width: 200px">
+        <strong>2. Verify</strong>
+        <p style="font-size: 0.85rem; color: #475569">
+          The municipality reviews and assigns a team.
+        </p>
+      </div>
+      <div style="flex: 1; min-width: 200px">
+        <strong>3. Fix & Update</strong>
+        <p style="font-size: 0.85rem; color: #475569">
+          Track progress on the community activity until it is marked
+          "Resolved".
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    style="
+      margin-bottom: 25px;
+      border-left: 4px solid var(--accent-blue);
+      padding-left: 20px;
+    "
+  >
+    <h4 style="margin-bottom: 5px">How do I report a fault?</h4>
+    <p style="font-size: 0.9rem; color: #4a5568; line-height: 1.6">
+      Click the <strong>"Log Report"</strong> button. To help technicians find
+      the issue faster, try to include a <strong>photo</strong> that shows a
+      nearby house number or landmark.
+    </p>
+  </div>
+
+  <div
+    style="
+      margin-bottom: 25px;
+      border-left: 4px solid var(--accent-blue);
+      padding-left: 20px;
+    "
+  >
+    <h4 style="margin-bottom: 5px">How can I track my report?</h4>
+    <p style="font-size: 0.9rem; color: #4a5568; line-height: 1.6">
+      Once submitted, your report will appear on the
+      <strong>Community Activity</strong>. You can locate your report to see the
+      current status (Pending, In Progress, or Resolved).
+    </p>
+  </div>
+
+  <div
+    style="
+      margin-bottom: 25px;
+      border-left: 4px solid var(--accent-blue);
+      padding-left: 20px;
+    "
+  >
+    <h4 style="margin-bottom: 5px">
+      Can I use the app in Setswana or isiZulu?
+    </h4>
+    <p style="font-size: 0.9rem; color: #4a5568; line-height: 1.6">
+      Yes! Use the <strong>"Select Language"</strong> dropdown in the sidebar to
+      switch the entire portal to Setswana, isiZulu, Afrikaans, or isiXhosa.
+    </p>
+  </div>
+
+  <div
+    style="
+      margin-bottom: 25px;
+      border-left: 4px solid var(--accent-blue);
+      padding-left: 20px;
+    "
+  >
+    <h4 style="margin-bottom: 5px">What does the "I'm Affected" button do?</h4>
+    <p style="font-size: 0.9rem; color: #4a5568; line-height: 1.6">
+      If you see an issue already reported by someone else, click
+      <strong>"I'm Affected"</strong>. This helps the municipality understand
+      the scale of the problem and increases the priority.
+    </p>
+  </div>
+
+  <div
+    style="
+      margin-top: 50px;
+      padding: 25px;
+      background: #eff6ff;
+      border-radius: 12px;
+      border: 1px dashed var(--accent-blue);
+    "
+  >
+    <p
+      style="
+        margin: 0;
+        font-weight: 700;
+        color: var(--accent-blue);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      "
+    >
+      Emergency Contacts
+    </p>
+    <p style="margin: 10px 0 0 0; font-size: 0.95rem; color: #1e40af">
+      <strong>Municipal Faults:</strong>
+      <a href="tel:0538306111" style="text-decoration: none; color: inherit"
+        >053 830 6111</a
+      ><br />
+      <strong>SAPS:</strong>
+      <a href="tel:10111" style="text-decoration: none; color: inherit"
+        >10111</a
+      >
+      | <strong>SMS:</strong> 44204
+    </p>
+  </div>
+</div>
+{% endblock %}
