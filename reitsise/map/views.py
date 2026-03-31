@@ -3,13 +3,13 @@ from django.http import JsonResponse
 from django.db.models import Q 
 from .models import Fault, AffectedResident 
 
-# 1. The Main Map / Search View
+
 def explorer_map(request):
     query = request.GET.get('search', '').strip()
     faults = Fault.objects.all().order_by('-date_reported')
 
     if query:
-        # Create a mapping for common search terms to your DB codes
+       
         search_map = {
             'water': 'WLEAK',
             'water leak': 'WLEAK',
@@ -20,14 +20,14 @@ def explorer_map(request):
             'power': 'ELEC',
         }
         
-        # Check if the user's word is in our map (case-insensitive)
+       
         db_code = search_map.get(query.lower())
 
         if db_code:
-            # If we found a code, search for that specific code
+            
             faults = faults.filter(category__icontains=db_code)
         else:
-            # Otherwise, perform the standard general search
+         
             faults = faults.filter(
                 Q(location_address__icontains=query) | 
                 Q(description__icontains=query) |
@@ -37,15 +37,14 @@ def explorer_map(request):
 
     return render(request, 'map/index.html', {'faults': faults})
 
-# 2. The About View (The one currently missing)
+
 def about(request): 
     return render(request, 'map/about.html')
 
-# 3. The Help/FAQ View (The other one currently missing)
 def help_faq(request): 
     return render(request, 'map/help.html')
 
-# 4. The "I'm Affected" Logic
+# This code ke ya the "I'm Affected" logic for residents to report that they are affected by a specific fault.
 def im_affected(request):
     if request.method == 'POST':
         fault_id = request.POST.get('fault_id')

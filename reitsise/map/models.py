@@ -14,25 +14,25 @@ class Fault(models.Model):
         ('OTHER', '🌳 Other')
     ]
 
-    # --- AUTO-GENERATED REFERENCE NUMBER ---
+   
     ref_number = models.CharField(max_length=12, unique=True, null=True, blank=True, editable=False)
     
-    # Information from Step 1
+    # Mona I'm storing the user info submitted from Step 1
     full_name = models.CharField(max_length=150)
     cellphone = models.CharField(max_length=15)
 
-    # Information from Step 2
+    # Mona I'm storing the report category le address  from Step 2
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
     location_address = models.TextField()
     latitude = models.DecimalField(max_digits=12, decimal_places=9, null=True, blank=True)
     longitude = models.DecimalField(max_digits=12, decimal_places=9, null=True, blank=True)
 
-    # Information from Step 3 (Evidence)
+    # Mona ke store the report evidence from step 3
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='fault_images/', null=True, blank=True)
     audio_report = models.FileField(upload_to='fault_audio/', null=True, blank=True)
 
-    # Internal Status Tracking
+    
     status = models.CharField(max_length=10, default='LOG', choices=[
         ('LOG', 'Logged'), 
         ('DIS', 'Dispatched'), 

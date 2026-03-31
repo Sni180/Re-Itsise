@@ -343,7 +343,7 @@
     document.getElementById("rev_desc").innerText =
       document.getElementById("desc_input").value || "None provided";
 
-    // Handle Image Preview in Review
+    // Mona I'm handling Image Preview in Review
     const imgInput = document.getElementById("imageInput");
     const imgPreview = document.getElementById("rev_img_preview");
     const imgCont = document.getElementById("rev_img_container");
@@ -361,7 +361,7 @@
       imgCont.style.display = "none";
     }
 
-    // Handle Audio Preview in Review
+    // Mona I'm handling Audio Preview in Review
     const audioInput = document.getElementById("audioFileInput");
     const audioPreview = document.getElementById("rev_audio_preview");
     const audioCont = document.getElementById("rev_audio_container");
@@ -374,7 +374,7 @@
       audioCont.style.display = "none";
     }
 
-    // Submit Validation
+    // Mona I'm handling Submit Validation
     const isComplete =
       document.getElementById("name_input").value &&
       cat.value &&
@@ -386,7 +386,7 @@
     nextStep(4);
   }
 
-  // --- Map & Audio Logic ---
+  // This one ke the Map Logic for selecting location in Step 2
   var map = L.map("map-picker").setView([-28.7433, 24.7587], 13);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
   var marker;
