@@ -34,7 +34,6 @@
         z-index: 1000;
       }
 
-      /* Multilingual Section Styling */
       .translate-label {
         color: var(--accent-blue);
         font-weight: 800;
@@ -49,25 +48,21 @@
         margin-bottom: 30px;
       }
 
-      /* Enhanced Google Translate UI */
       .goog-te-gadget {
         font-family: "Inter", sans-serif !important;
-        color: #a0aec0 !important; /* Matches sidebar text */
+        color: #a0aec0 !important;
       }
 
       .goog-te-combo {
         width: 100%;
-        background: #ffffff !important; /* High contrast for visibility */
+        background: #ffffff !important;
         color: #1a1f2c !important;
         border: 2px solid var(--accent-blue) !important;
         padding: 8px !important;
         border-radius: 8px !important;
         cursor: pointer;
         font-weight: 600;
-        font-family: "Inter", sans-serif !important;
       }
-
-      /* Removed 'display:none' rules to keep Google branding visible for clarity */
 
       .brand {
         font-size: 1.5rem;
@@ -91,14 +86,22 @@
         border-radius: 8px;
         margin-bottom: 10px;
         transition: 0.2s;
+        border-left: 4px solid transparent; /* Placeholder for active state */
       }
-      .nav-link:hover,
-      .nav-link.active {
+
+      .nav-link:hover {
         background: rgba(255, 255, 255, 0.1);
         color: white;
       }
 
-      /* Main Content Area */
+      /* Active State Styling */
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border-left: 4px solid var(--accent-blue);
+        font-weight: 600;
+      }
+
       .main-content {
         margin-left: 300px;
         padding: 40px;
@@ -113,14 +116,31 @@
       <span class="slogan notranslate">See, Inform, Track — Together</span>
 
       <div class="language-picker">
-        <span class="translate-label">🌍 Change Interface Langauage</span>
+        <span class="translate-label">🌍 Change Interface Language</span>
         <div id="google_translate_element"></div>
       </div>
 
       <nav>
-        <a href="{% url 'explorer_map' %}" class="nav-link active">🏠 Home</a>
-        <a href="{% url 'about' %}" class="nav-link">ℹ️ About</a>
-        <a href="{% url 'help' %}" class="nav-link">❓ Help & FAQs</a>
+        <a
+          href="{% url 'explorer_map' %}"
+          class="nav-link {% if request.resolver_match.url_name == 'explorer_map' %}active{% endif %}"
+        >
+          🏠 Home
+        </a>
+
+        <a
+          href="{% url 'about' %}"
+          class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}"
+        >
+          ℹ️ About
+        </a>
+
+        <a
+          href="{% url 'help' %}"
+          class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}"
+        >
+          ❓ Help & FAQs
+        </a>
       </nav>
     </div>
 
@@ -131,7 +151,6 @@
         new google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            /* st: Setswana (displayed as Sesotho by default), zu: Zulu, af: Afrikaans, xh: Xhosa */
             includedLanguages: "en,af,st,zu,xh",
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false,
@@ -139,7 +158,6 @@
           "google_translate_element",
         );
 
-        // This script fixes the 'Sesotho' label to say 'Setswana' for Kimberley users
         const fixLabels = () => {
           const combo = document.querySelector(".goog-te-combo");
           if (combo) {
