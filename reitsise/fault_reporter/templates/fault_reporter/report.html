@@ -22,6 +22,35 @@
   </div>
 </div>
 
+<div id="confirmModal" class="modal-overlay" style="display: none">
+  <div class="modal-content">
+    <div style="font-size: 40px; margin-bottom: 10px">❓</div>
+    <h3 style="color: #0f172a">Final Confirmation</h3>
+    <p style="color: #64748b">
+      Are you sure you want to submit this report? <br />
+      Please ensure the location and category are correct.
+    </p>
+    <div style="display: flex; gap: 15px; margin-top: 25px">
+      <button
+        type="button"
+        onclick="closeConfirm(false)"
+        class="btn-stop"
+        style="flex: 1; padding: 12px"
+      >
+        No, Edit
+      </button>
+      <button
+        type="button"
+        onclick="closeConfirm(true)"
+        class="submit-btn"
+        style="flex: 1; padding: 12px"
+      >
+        Yes, Submit
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="card" style="max-width: 800px; margin: auto; padding: 30px">
   <div
     style="
@@ -246,7 +275,6 @@
         <p><strong>Category:</strong> <span id="rev_cat"></span></p>
         <p><strong>Location:</strong> <span id="rev_addr"></span></p>
         <p><strong>Details:</strong> <span id="rev_desc"></span></p>
-
         <div
           id="review-attachments"
           style="
@@ -260,7 +288,6 @@
             id="rev_img_container"
             style="display: none; margin-bottom: 10px"
           >
-            <p style="font-size: 0.8rem; color: #64748b">Photo Preview:</p>
             <img
               id="rev_img_preview"
               src=""
@@ -272,9 +299,6 @@
             />
           </div>
           <div id="rev_audio_container" style="display: none">
-            <p style="font-size: 0.8rem; color: #64748b">
-              Voice Report Preview:
-            </p>
             <audio id="rev_audio_preview" controls style="width: 100%"></audio>
           </div>
           <p id="rev_no_media" style="color: #94a3b8; font-style: italic">
@@ -282,7 +306,6 @@
           </p>
         </div>
       </div>
-
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
         <button
           type="button"
@@ -308,6 +331,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+  // Navigation
   function nextStep(step) {
     if (
       step === 2 &&
@@ -324,10 +348,7 @@
     document.getElementById("progress-bar").style.width =
       (step / 4) * 100 + "%";
     document.getElementById("step-indicator").innerText = `Step ${step} of 4`;
-    if (step === 2)
-      setTimeout(() => {
-        map.invalidateSize();
-      }, 200);
+    if (step === 2) setTimeout(() => map.invalidateSize(), 200);
   }
 
   function goToReview() {
@@ -343,38 +364,28 @@
     document.getElementById("rev_desc").innerText =
       document.getElementById("desc_input").value || "None provided";
 
-    // Mona I'm handling Image Preview in Review
+    // Previews
     const imgInput = document.getElementById("imageInput");
-    const imgPreview = document.getElementById("rev_img_preview");
-    const imgCont = document.getElementById("rev_img_container");
     const noMedia = document.getElementById("rev_no_media");
-
     if (imgInput.files && imgInput.files[0]) {
       const reader = new FileReader();
-      reader.onload = function (e) {
-        imgPreview.src = e.target.result;
-        imgCont.style.display = "block";
+      reader.onload = (e) => {
+        document.getElementById("rev_img_preview").src = e.target.result;
+        document.getElementById("rev_img_container").style.display = "block";
         noMedia.style.display = "none";
       };
       reader.readAsDataURL(imgInput.files[0]);
-    } else {
-      imgCont.style.display = "none";
     }
 
-    // Mona I'm handling Audio Preview in Review
     const audioInput = document.getElementById("audioFileInput");
-    const audioPreview = document.getElementById("rev_audio_preview");
-    const audioCont = document.getElementById("rev_audio_container");
-
     if (audioInput.files && audioInput.files[0]) {
-      audioPreview.src = URL.createObjectURL(audioInput.files[0]);
-      audioCont.style.display = "block";
+      document.getElementById("rev_audio_preview").src = URL.createObjectURL(
+        audioInput.files[0],
+      );
+      document.getElementById("rev_audio_container").style.display = "block";
       noMedia.style.display = "none";
-    } else {
-      audioCont.style.display = "none";
     }
 
-    // Mona I'm handling Submit Validation
     const isComplete =
       document.getElementById("name_input").value &&
       cat.value &&
@@ -382,11 +393,10 @@
     const submitBtn = document.getElementById("submitBtn");
     submitBtn.disabled = !isComplete;
     submitBtn.style.opacity = isComplete ? "1" : "0.5";
-
     nextStep(4);
   }
 
-  // This one ke the Map Logic for selecting location in Step 2
+  // Map Logic (Direct Manipulation)
   var map = L.map("map-picker").setView([-28.7433, 24.7587], 13);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
   var marker;
@@ -399,11 +409,13 @@
       `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${e.latlng.lat}&lon=${e.latlng.lng}`,
     )
       .then((res) => res.json())
-      .then((data) => {
-        document.getElementById("id_address").value = data.display_name;
-      });
+      .then(
+        (data) =>
+          (document.getElementById("id_address").value = data.display_name),
+      );
   });
 
+  // Audio Logic
   let mediaRecorder,
     chunks = [];
   document.getElementById("startBtn").onclick = async () => {
@@ -416,8 +428,7 @@
     mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
     mediaRecorder.onstop = () => {
       const blob = new Blob(chunks, { type: "audio/wav" });
-      const audioUrl = URL.createObjectURL(blob);
-      document.getElementById("audioPreview").src = audioUrl;
+      document.getElementById("audioPreview").src = URL.createObjectURL(blob);
       document.getElementById("audioPreview").style.display = "block";
       const file = new File([blob], "voice.wav", { type: "audio/wav" });
       const container = new DataTransfer();
@@ -433,22 +444,31 @@
     document.getElementById("stopBtn").disabled = true;
   };
 
-  async function handleFormSubmit(event) {
+  // Submission Logic (Handling Confirmation Dialogue)
+  function handleFormSubmit(event) {
     event.preventDefault();
-    const btn = document.getElementById("submitBtn");
-    btn.disabled = true;
-    btn.innerText = "Submitting...";
-    try {
-      const response = await fetch(window.location.href, {
-        method: "POST",
-        body: new FormData(event.target),
-        headers: { "X-CSRFToken": "{{ csrf_token }}" },
-      });
-      if (response.ok)
-        document.getElementById("successModal").style.display = "flex";
-    } catch (e) {
-      btn.disabled = false;
-      btn.innerText = "Confirm & Submit";
+    // Show the confirmation modal (Responding Interaction)
+    document.getElementById("confirmModal").style.display = "flex";
+  }
+
+  async function closeConfirm(isConfirmed) {
+    document.getElementById("confirmModal").style.display = "none";
+    if (isConfirmed) {
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.innerText = "Submitting...";
+      try {
+        const response = await fetch(window.location.href, {
+          method: "POST",
+          body: new FormData(document.getElementById("reportForm")),
+          headers: { "X-CSRFToken": "{{ csrf_token }}" },
+        });
+        if (response.ok)
+          document.getElementById("successModal").style.display = "flex";
+      } catch (e) {
+        btn.disabled = false;
+        btn.innerText = "Confirm & Submit";
+      }
     }
   }
 
@@ -477,6 +497,7 @@
     border-radius: 12px;
     text-align: center;
     max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
   .form-control,
   select {
